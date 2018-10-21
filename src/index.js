@@ -1,9 +1,16 @@
 import './main.css';
-import { Elm } from './Main.elm';
+const {Elm} = require('./Main');
 import registerServiceWorker from './registerServiceWorker';
+import('./gol.js');
 
-Elm.Main.init({
-  node: document.getElementById('root')
+const app = Elm.Main.init({});
+
+app.ports.logger.subscribe(message => {
+    console.log('Port emitted a new message: ' + message);
+});
+
+app.ports.tick.subscribe(message => {
+    console.log('tick: ' + message);
 });
 
 registerServiceWorker();
