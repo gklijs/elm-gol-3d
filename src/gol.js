@@ -1,14 +1,14 @@
 import {Universe, Utils} from "game-of-life-3d";
+import {ElmIn, ElmOut} from "./index";
 
-const universe = Universe.new(500, 500, 500);
+const universe = Universe.new(5, 5, 5);
 universe.randomize();
 
 console.log("something");
 
-const renderLoop = () => {
-    universe.tick();
-    console.log(Utils.getChanges(universe));
-    requestAnimationFrame(renderLoop);
-};
-
-renderLoop();
+ElmOut.stream().subscribe(
+    msg => {
+        universe.tick();
+        ElmIn.emit(Utils.getChanges(universe));
+    }
+);
