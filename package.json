@@ -23,6 +23,7 @@
   "homepage": "https://github.com/gklijs/elm-gol-3d#readme",
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "babel-loader": "^8.0.4",
@@ -49,7 +50,6 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
     "ajv": "^6.5.4",
     "game-of-life-3d": "^1.0.0",
     "purecss": "^1.0.0",
