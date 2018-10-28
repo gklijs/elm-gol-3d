@@ -8,10 +8,11 @@ console.log("something");
 
 ElmOut.stream().subscribe(
     msg => {
+        console.log(msg);
         universe.tick();
-        ElmIn.emit(JSON.stringify({height: universe.height()}));
-        ElmIn.emit(JSON.stringify({width: universe.width()}));
-        ElmIn.emit(JSON.stringify({tick: universe.ticks(), bla: "welkom"}));
-        ElmIn.emit(JSON.stringify({depth: universe.depth()}));
+        ElmIn.emit({height: universe.height()});
+        ElmIn.emit({width: universe.width()});
+        ElmIn.emit({tick: universe.ticks(), bla: "welkom"});
+        ElmIn.emit({depth: universe.depth()});
     }
 );

@@ -6,6 +6,7 @@ import Debug exposing (log, toString)
 import Html exposing (Html, br, button, div, h1, img, li, text, ul)
 import Html.Attributes exposing (id, src)
 import Json.Decode as JD exposing (Decoder, Value, oneOf, field, map, int, at, succeed, map2)
+import Json.Encode as JE exposing (encode, object, int)
 
 ---- MODEL ----
 
@@ -62,10 +63,10 @@ update msg model =
     case msg of
         Inc ->
             ( { model | counter = model.counter + 1}
-            , toGol ("Elm-count up " ++ (toString (model.counter + 1))))
+            , toGol (JE.encode 0 (JE.object [("width", JE.int (model.counter + 1))])))
         Dec ->
             ( { model | counter = model.counter - 1}
-            , toGol ("Elm-count down " ++ (toString (model.counter - 1))))
+            , toGol (JE.encode 0 (JE.object [("width", JE.int (model.counter - 1))])))
         NoOp ->
             ( model, Cmd.none )
         Xs out ->
@@ -73,17 +74,17 @@ update msg model =
 
 ---- DECODING ----
 
-mapGol : String -> Msg
+mapGol : JD.Value -> Msg
 mapGol jsonGol =
-    case (log "result"(decodeGol (log "value" jsonGol))) of
+    case decodeGol jsonGol of
         Ok result ->
             Xs result
         Err _ ->
             Xs None
 
-decodeGol : String -> Result JD.Error FromGol
+decodeGol : JD.Value -> Result JD.Error FromGol
 decodeGol modelGol =
-    JD.decodeString gol modelGol
+    JD.decodeValue gol modelGol
 
 tickDecoder : JD.Decoder Tick
 tickDecoder =
@@ -157,4 +158,4 @@ main =
         }
 
 port toGol : String -> Cmd msg
-port fromGol : (String -> msg) -> Sub msg
+port fromGol : (JD.Value -> msg) -> Sub msg
