@@ -73,17 +73,17 @@ update msg model =
 
 ---- DECODING ----
 
-mapGol : JD.Value -> Msg
+mapGol : String -> Msg
 mapGol jsonGol =
-    case decodeGol jsonGol of
+    case (log "result"(decodeGol (log "value" jsonGol))) of
         Ok result ->
             Xs result
         Err _ ->
             Xs None
 
-decodeGol : JD.Value -> Result JD.Error FromGol
+decodeGol : String -> Result JD.Error FromGol
 decodeGol modelGol =
-    JD.decodeValue gol modelGol
+    JD.decodeString gol modelGol
 
 tickDecoder : JD.Decoder Tick
 tickDecoder =
@@ -157,4 +157,4 @@ main =
         }
 
 port toGol : String -> Cmd msg
-port fromGol : (JD.Value -> msg) -> Sub msg
+port fromGol : (String -> msg) -> Sub msg
