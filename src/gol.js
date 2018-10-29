@@ -1,18 +1,23 @@
 import {Universe, Utils} from "game-of-life-3d";
 import {ElmIn, ElmOut} from "./index";
+import {timer, merge} from "rxjs";
 
-const universe = Universe.new(5, 5, 5);
+let height = 5;
+let width = 5;
+let depth = 5;
+const universe = Universe.new(height, width, depth);
 universe.randomize();
 
-console.log("something");
+ElmIn.emit({cells: Utils.getCellsAsBool(universe)});
 
-ElmOut.stream().subscribe(
+const source = timer(500, 1000);
+const combined = merge(source, ElmOut.stream());
+
+combined.subscribe(
     msg => {
         console.log(msg);
         universe.tick();
-        ElmIn.emit({height: universe.height()});
-        ElmIn.emit({width: universe.width()});
-        ElmIn.emit({tick: universe.ticks(), bla: "welkom"});
-        ElmIn.emit({depth: universe.depth()});
+        const changes = Utils.getChanges(universe);
+        ElmIn.emit({births: Array.from(changes[0]), deaths: Array.from(changes[1]), ticks: universe.ticks()});
     }
 );

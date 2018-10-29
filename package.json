@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "ajv": "^6.5.4",
-    "game-of-life-3d": "^1.0.0",
+    "game-of-life-3d": "^1.1.0",
     "purecss": "^1.0.0",
     "rxjs": "^6.3.3"
   },

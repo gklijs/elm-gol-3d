@@ -41,6 +41,7 @@ app.ports.toGol.subscribe(
 
 ElmIn.stream().subscribe(
     msg => {
+        console.log(msg);
         app.ports.fromGol.send(msg)
     }
 );
