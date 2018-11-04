@@ -7,6 +7,7 @@ import Html exposing (Html, br, button, div, h1, img, input, li, text, ul)
 import Html.Attributes exposing (id, max, min, src, type_, value)
 import Json.Decode as JD exposing (Decoder, Value, oneOf, field, map, int, at, succeed, map3, list)
 import Json.Encode as JE exposing (encode, object, int)
+import WebGL exposing (Mesh, Shader)
 
 ---- MODEL ----
 
@@ -56,13 +57,13 @@ update msg model =
             ( {model | outs = out :: model.outs}, Cmd.none)
         UpdateHeight newHeight ->
             ( {model | heigth = String.toInt newHeight |> Maybe.withDefault 10}
-            , toGol (JE.encode 0 (JE.object [("height", JE.int model.heigth)])))
+            , toGol (JE.object [("height", JE.int model.heigth)]))
         UpdateWidth newWidth ->
             ( {model | width = String.toInt newWidth |> Maybe.withDefault 10}
-            , toGol (JE.encode 0 (JE.object [("width", JE.int model.width)])))
+            , toGol (JE.object [("width", JE.int model.width)]))
         UpdateDepth newDepth ->
             ( {model | depth = String.toInt newDepth |> Maybe.withDefault 10}
-            , toGol (JE.encode 0 (JE.object [("depth", JE.int model.depth)])))
+            , toGol (JE.object [("depth", JE.int model.depth)]))
 
 ---- DECODING ----
 
@@ -142,5 +143,5 @@ main =
         , subscriptions = subscriptions
         }
 
-port toGol : String -> Cmd msg
+port toGol : JE.Value -> Cmd msg
 port fromGol : (JD.Value -> msg) -> Sub msg
